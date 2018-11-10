@@ -16,7 +16,11 @@ app.use(express.static(publicPath))
 //register an event listener, listen for event and do something when it happens
 io.on('connection', (socket) => {
     console.log('new user connected')
+    socket.on('disconnect', () => {
+        console.log('user was disconnected')
+    })
 })
+
 
 server.listen(port, () => {
     console.log(`server on port ${port}`)
