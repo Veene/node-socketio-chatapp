@@ -16,6 +16,24 @@ app.use(express.static(publicPath))
 //register an event listener, listen for event and do something when it happens
 io.on('connection', (socket) => {
     console.log('new user connected')
+
+    socket.emit('newEmail', {
+        from: 'mike@example.com',
+        text: 'Hey. Whats going on?',
+        createdAt: 123
+    });
+    socket.on('createEmail', (newEmail) => {
+        console.log('createEmail: ', newEmail)
+    })
+    socket.on('createMessage', function(message) {
+        console.log('createMessageFromClient: ', message)
+        var clientMessage = `Hi everyone, ${message.from} wants to say: ${message.text}`
+        socket.emit('newMessage', {
+            clientMessage : clientMessage,
+            createdAt: 123123
+        })
+    })
+
     socket.on('disconnect', () => {
         console.log('user was disconnected')
     })
