@@ -10,14 +10,11 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (message) {
   console.log('newMessage', message);
+  const ol = document.getElementById("render-message")
+  const li = document.createElement('li');
+  li.textContent = `${message.from}: ${message.text}`;
+  ol.appendChild(li)
 });
-
-socket.emit('createMessage', {
-  from: 'Frank',
-  text: 'Hi'
-}, function (data) {
-  console.log('got it', data)
-})
 
 const messageForm = document.getElementById("message-form")
 messageForm.addEventListener('submit', (e) => {
