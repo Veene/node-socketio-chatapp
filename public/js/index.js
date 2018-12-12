@@ -36,20 +36,31 @@ messageForm.addEventListener('submit', (e) => {
     from: 'User',
     text: inputValue
   }, function(data){
-    console.log(data)
+    console.log(data);
+    document.getElementById("input").value = '';
   })
+
 })
 const locationButton = document.getElementById("send-location")
 locationButton.addEventListener('click', () => {
   if(!navigator.geolocation) {
     return alert('Geolocation not support by your browser')
   }
+
+  locationButton.setAttribute('disabled', 'disabled');
+  locationButton.textContent = "Sending Location";
+
+
   navigator.geolocation.getCurrentPosition(function(position) {
+    locationButton.removeAttribute('disabled')
+    locationButton.textContent = "Send Location";
     socket.emit('createLocationMessage', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
     })
   }, function () {
     alert('unable fetch location.')
+    locationButton.removeAttribute('disabled')
+    locationButton.textContent = "Send Location";
   })
 })
