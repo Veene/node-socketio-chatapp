@@ -16,6 +16,18 @@ socket.on('newMessage', function (message) {
   ol.appendChild(li)
 });
 
+socket.on('newLocationMessage', function (message) {
+  console.log('trying to get location and setting anchor');
+  const ol = document.getElementById("render-message");
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  li.textContent = `${message.from}: `;
+  a.textContent = `My current location`;
+  a.setAttribute('href', message.url);
+  li.append(a);
+  ol.appendChild(li);
+});
+
 const messageForm = document.getElementById("message-form")
 messageForm.addEventListener('submit', (e) => {
   e.preventDefault();
