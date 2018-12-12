@@ -10,24 +10,49 @@ socket.on('disconnect', function () {
 
 socket.on('newMessage', function (message) {
   const formattedTime = moment(message.createdAt).format('h:mm a');
-  console.log('newMessage', message);
+  const template = document.getElementById('message-template').innerHTML
+  const html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  })
   const ol = document.getElementById("render-message")
-  const li = document.createElement('li');
-  li.textContent = `${message.from} ${formattedTime}: ${message.text}`;
-  ol.appendChild(li)
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  ol.appendChild(div);
+
+
+  
+  // console.log('newMessage', message);
+  // const ol = document.getElementById("render-message")
+  // const li = document.createElement('li');
+  // li.textContent = `${message.from} ${formattedTime}: ${message.text}`;
+  // ol.appendChild(li)
 });
 
 socket.on('newLocationMessage', function (message) {
-  console.log('trying to get location and setting anchor');
   const formattedTime = moment(message.createdAt).format('h:mm a');
-  const ol = document.getElementById("render-message");
-  const li = document.createElement('li');
-  const a = document.createElement('a');
-  li.textContent = `${message.from} ${formattedTime}: `;
-  a.textContent = `My current location`;
-  a.setAttribute('href', message.url);
-  li.append(a);
-  ol.appendChild(li);
+  const template = document.getElementById('location-message-template').innerHTML
+  const html = Mustache.render(template, {
+    from: message.from,
+    url: message.url,
+    createdAt: formattedTime 
+  });
+  const ol = document.getElementById("render-message")
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  ol.appendChild(div);
+
+  // console.log('trying to get location and setting anchor');
+  // const formattedTime = moment(message.createdAt).format('h:mm a');
+  // const ol = document.getElementById("render-message");
+  // const li = document.createElement('li');
+  // const a = document.createElement('a');
+  // li.textContent = `${message.from} ${formattedTime}: `;
+  // a.textContent = `My current location`;
+  // a.setAttribute('href', message.url);
+  // li.append(a);
+  // ol.appendChild(li);
 });
 
 const messageForm = document.getElementById("message-form")
@@ -38,7 +63,7 @@ messageForm.addEventListener('submit', (e) => {
     from: 'User',
     text: inputValue
   }, function(data){
-    console.log(data);
+    // console.log('data', data);
     document.getElementById("input").value = '';
   })
 
