@@ -9,19 +9,21 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function (message) {
+  const formattedTime = moment(message.createdAt).format('h:mm a');
   console.log('newMessage', message);
   const ol = document.getElementById("render-message")
   const li = document.createElement('li');
-  li.textContent = `${message.from}: ${message.text}`;
+  li.textContent = `${message.from} ${formattedTime}: ${message.text}`;
   ol.appendChild(li)
 });
 
 socket.on('newLocationMessage', function (message) {
   console.log('trying to get location and setting anchor');
+  const formattedTime = moment(message.createdAt).format('h:mm a');
   const ol = document.getElementById("render-message");
   const li = document.createElement('li');
   const a = document.createElement('a');
-  li.textContent = `${message.from}: `;
+  li.textContent = `${message.from} ${formattedTime}: `;
   a.textContent = `My current location`;
   a.setAttribute('href', message.url);
   li.append(a);
