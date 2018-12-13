@@ -1,5 +1,34 @@
 var socket = io();
 
+function scrollToBottom () {
+  //Selectors
+  let messages = document.getElementById('render-message')
+  let newMessage = messages.lastElementChild;
+  // console.log('newMessage', newMessage)
+  //Heights
+  let clientHeight = messages.clientHeight;
+  // console.log('clientHeight', clientHeight)
+  let scrollTop = messages.scrollTop;
+  // console.log('ScrollTop', scrollTop)
+  let scrollHeight = messages.scrollHeight;
+  // console.log('scrollHeight', scrollHeight)
+  let newMessageHeight = newMessage.clientHeight;
+  // console.log('newMessageHeight', newMessageHeight)
+  let lastMessageHeight;
+  if(newMessage.previousSibling) {
+    lastMessageHeight = newMessage.previousSibling.clientHeight;
+  } else {
+    lastMessageHeight = 0;
+  }
+  
+  // console.log('lastMessageHeight', lastMessageHeight)
+
+  if((clientHeight + scrollTop + newMessageHeight + lastMessageHeight) >= scrollHeight) {
+    // console.log('should autoscroll');
+    messages.scrollTop = scrollHeight;
+  }
+}
+
 socket.on('connect', function () {
   console.log('Connected to server');
 });
@@ -20,6 +49,7 @@ socket.on('newMessage', function (message) {
   const div = document.createElement('div');
   div.innerHTML = html;
   ol.appendChild(div);
+  scrollToBottom();
 
 
   
@@ -42,6 +72,7 @@ socket.on('newLocationMessage', function (message) {
   const div = document.createElement('div');
   div.innerHTML = html;
   ol.appendChild(div);
+  scrollToBottom();
 
   // console.log('trying to get location and setting anchor');
   // const formattedTime = moment(message.createdAt).format('h:mm a');
