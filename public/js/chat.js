@@ -31,6 +31,18 @@ function scrollToBottom () {
 
 socket.on('connect', function () {
   console.log('Connected to server');
+  let params = new URLSearchParams(window.location.search);
+  let name = params.get("name");
+  let room = params.get("room");
+  params = {name:name, room:room}
+  socket.emit('join', params, function(err) {
+    if(err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('no error');
+    }
+  })
 });
 
 socket.on('disconnect', function () {
@@ -122,3 +134,7 @@ locationButton.addEventListener('click', () => {
     locationButton.textContent = "Send Location";
   })
 })
+
+// let params = new URLSearchParams(window.location.search);
+// let name = params.get("name");
+// let room = params.get("room");
