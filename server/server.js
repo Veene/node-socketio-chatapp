@@ -16,16 +16,22 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
-  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
-
-  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User joined'));
-
   socket.on('join', (params, callback) => {
+    //THESE ARE DONE ON CONNECTING TO CLIENT page chat.html (when taken there from index clicking submit on form)
     // let name = params.get("name");
     // let room = params.get("room");
+    // params = {name:name, room:room}
     if(!isRealString(params.name) || !isRealString(params.room)) {
       callback('Name and room name are required');
     }
+    socket.join(params.room);
+    //io.emit -> io.to('The Office Fans').emit
+    //socket.broadcast.emit -> socket.broadcast.to('The Office Fans').emit
+    //socket.emit
+
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
+    socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} joined the room`));
+
     callback();
   });
 
