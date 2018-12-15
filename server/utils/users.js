@@ -26,11 +26,7 @@ class Users {
         //return user that was removed
         let removedUser = this.users.filter((user, i) => user.id === id)
         this.users = this.users.filter((user) => user.id !== id)
-        if(removedUser.name) {
-            return `removed user: ${removedUser[0].name}`
-        } else {
-            return `User did not exist`
-        }
+        return removedUser[0]
     }
     getUser(id) {
         let getUser = this.users.filter((user, i) => user.id === id)
