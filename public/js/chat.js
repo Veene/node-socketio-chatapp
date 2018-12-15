@@ -117,7 +117,7 @@ messageForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const inputValue = document.getElementById("input").value;
   socket.emit('createMessage', {
-    from: 'User',
+    // from: 'User',
     text: inputValue
   }, function(data){
     // console.log('data', data);
